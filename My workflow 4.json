@@ -1,0 +1,227 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        0,
+        0
+      ],
+      "id": "6c87c3b2-951f-4a1f-abfc-7822060a4d2e",
+      "name": "When chat message received",
+      "webhookId": "10ffafae-aff2-4133-a43a-a0fd85128b43"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "\nYou are a HIGH-DEPTH MULTI-WEBSITE WEB SCRAPING AI inside n8n.\n\nYour scraping must be COMPLETE, EXHAUSTIVE, and MULTI-SOURCE.\n\n\nYour job:\n1. Understand the user’s topic (e.g., soil testing labs in Tamil Nadu).\n2. Automatically search MULTIPLE websites.\n3. Scrape ALL pages, ALL results, ALL listings — NOT ONLY the first 3.\n4. Continue scraping until **NO MORE RESULTS EXIST**.\n\n---------------------------------------------------------------------\nSPECIAL RULES FOR SOIL TESTING LABS (TAMIL NADU)\nYou must collect EVERY government and private soil testing lab from ALL districts.\n\n“For every district in Tamil Nadu, search Google Maps and other reliable directories for ‘soil testing lab <district>, Tamil Nadu’ and extract all private soil testing laboratories listed (not just the top few).”\n\nNO STOPPING until ALL data is extracted\n\nMANDATORY DATA SOURCES:\n1. Tamil Nadu Agriculture Department official lists\n2. TNAU soil testing labs & agriculture extension centers\n3. ICAR / KVK district offices\n4. District Agriculture Office websites\n5. Google Maps multi-page results (ENTIRE LIST, not top 3)\n6. JustDial multi-page results\n7. IndiaMART multi-page results\n8. ANY other trusted directory\n\nVery important:\n- Do NOT stop after the first page.\n- Do NOT stop after top 3 items.\n- Paginate through ALL results until no more results exist.\n\n\nYour job is:\n\n1. Understand the user’s TOPIC or QUERY.\n2. Automatically choose the best MULTIPLE WEBSITES for that topic.\n3. Search the topic across multiple websites (not only one).\n4. Open the search results pages.\n5. Extract ALL items/listings/products visible on the page.\n\nGENERAL RULES:\n- For missing text fields, use \"\".\n- For missing lists, use [].\n- For missing objects, use {}.\n- Output ONLY tool calls (Google Sheets append row). No explanations.\n\n---------------------------------------------------------------------\n\nSPECIAL RULES FOR SOIL TESTING LABS (TAMIL NADU):\n\nWhen the user asks for soil testing labs (or anything related), do this:\n\n1. Search the best websites that list soil testing labs:\n   - Government sites (Tamil Nadu Agriculture Department, official STL lists)\n   - TNAU (Tamil Nadu Agricultural University) and agriculture extension centers\n   - ICAR, KVK, district agriculture portals\n   - Private directories (Google Maps searches, reliable listing directories)\n\n2. Extract \n   - \n   - Private soil testing labs\n\n3. For EACH lab found, call the Google Sheets tool:\n   “Append row in sheet in Google Sheets”.\n\n4. Fill the sheet columns EXACTLY as follows:\n\n- Name: The lab’s name or organisation name.\n- Address: Full physical address (street, area, district, pincode).\n- District: District name (e.g., Coimbatore, Chennai, Madurai).\n- Category: “Government” or “Private”.\n- Contact: Phone number(s). If multiple, combine with commas.\n- Email: Email address if available, otherwise \"\".\n\n5. Additional rules:\n- One tool call PER LAB.\n- Do NOT stop after 5 items — scrape ALL clearly listed labs.\n- If any field is missing, fill \"\".\n- Do NOT include fields not present in the sheet.\n- Ignore any non-lab item (shops, dress stores, products, ads, etc.).\n\nSTRICT SCRAPING RULES:\n\n- Scrape ALL districts.\n- Scrape ALL results in every district.\n- Scrape ALL pages on every website.\n- Scrape ALL private listings (not only government sites).\n- Scrape ALL results even if there are 50+ private labs.\n- NO LIMIT. Continue until ALL data from ALL sources is extracted.\n\nDUPLICATE HANDLING:\n- Use (Name + District) to avoid duplicates.\n\nIGNORE:\n- Stores, dress shops, equipment sellers, ads, unrelated items.\n\nMISSING FIELDS:\n- Use \"\" for text fields.\n\n---------------------------------------------------------------------\n\nUNIVERSAL SCRAPING RULE (APPLIES TO ANY OTHER TOPIC):\n\nIf the user asks for ANY TOPIC that has multiple items (example: hotels, stores, colleges, hospitals, etc.):\n\n- Search MULTIPLE websites relevant to that topic.\n- Extract ALL visible items/listings on those websites.\n- There is NO fixed limit.\n  - If 10 items are available, scrape 10.\n  - If 20 items are available, scrape 20.\n  - If 50 items are available, scrape 50.\n\nFor EACH item:\n- Call the Google Sheets tool “Append row in sheet”.\n- One tool call = one row.\n- Continue until all items are processed.\n\nAlways treat the task as:\n“Scrape ALL items and fill them in the Google Sheet.”\n\n---------------------------------------------------------------------\n\nYour output must ONLY be Google Sheets tool calls for each collected item.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "295f6015-90e7-4657-a167-27283e4f1da6",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "x-ai/grok-4.1-fast:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "1a67dfe0-85a8-40ef-93ec-efde65131220",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "ecRPR99sl206AT5I",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "45f3c8a0-951e-4712-a61d-4169e775b825",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1syMEEk4Q3ZRlRH2r2W5_XMtQTPzkBhHVw6cFxdxhxbo",
+          "mode": "list",
+          "cachedResultName": "universal scrapper",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1syMEEk4Q3ZRlRH2r2W5_XMtQTPzkBhHVw6cFxdxhxbo/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "Sheet2",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name ": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Name_', ``, 'string') }}",
+            "address": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('address', ``, 'string') }}",
+            "district": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('district', ``, 'string') }}",
+            "category": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('category', ``, 'string') }}",
+            "contact": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('contact', ``, 'string') }}",
+            "email": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('email', ``, 'string') }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name ",
+              "displayName": "Name ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "address",
+              "displayName": "address",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "district",
+              "displayName": "district",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "category",
+              "displayName": "category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "contact",
+              "displayName": "contact",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        368,
+        208
+      ],
+      "id": "6935c686-1ad7-4aa0-a6ff-43366323946d",
+      "name": "Append row in sheet in Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gzWyGEGt3lcwyxPW",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "96b7d871-0e04-49e6-8e11-adc2e9c9e2f6",
+  "meta": {
+    "instanceId": "e26cac91cf2d157406e3f6531c7f9f09310552530b4fad1c3d0e7d1caaf5d56a"
+  },
+  "id": "EPOqhUY06b0Zu3eB",
+  "tags": []
+}
