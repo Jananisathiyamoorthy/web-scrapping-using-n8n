@@ -49,6 +49,7 @@ The workflow successfully functions as a universal scraper capable of:
 ## SOIL TESTING LABS DATA COLLECTION USING N8N UNIVERSAL WEB SCRAPER
 
 The objective of this task was to build and use a universal web-scraping workflow in n8n to collect detailed information about soil testing laboratories (both Government and Private) across all districts in Tamil Nadu and store the data in a structured Google Sheet.
+
 •	Set up AI Agent with custom system prompt for soil testing labs.
 •	Mapped required Google Sheets fields (Name, Address, District, Category, Contact, Email).
 •	Ran the workflow with the topic “Soil testing labs in Tamil Nadu”.
@@ -57,14 +58,18 @@ The objective of this task was to build and use a universal web-scraping workflo
 •	Ensured duplicates were removed and fields were consistently formatted.
 
 Configured the trigger (When Chat Message Received )
+
             Added a trigger node to allow the workflow to start automatically when a user sends a topic or query, such as “Soil testing labs in Tamil Nadu”.
 
 Set up the AI Agent with a custom system prompt
+          
           Configured the AI Agent node with a detailed system message that instructs it to search multiple websites, extract complete information, and follow a fixed schema for data fields. The prompt was specifically optimized for scraping soil testing labs in Tamil Nadu (both Government and Private).
 
 Mapped the required Google Sheets fields
+         
          In the Google Sheets “Append Row” node, I mapped the output fields such as: Name, Address, District, Category (Government/Private), Contact, Email. These fields ensure that the scraped data is properly structured inside the sheet.
 
 Executed the workflow by sending a chat message with the scraping topic.
+         
           The AI Agent understood the query and started searching multiple government and private websites for soil testing lab details. The Agent extracted all available entries and appended them into Google Sheets.
 
